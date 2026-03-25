@@ -2,10 +2,10 @@
 
 name: CI/CD Pipeline
 
-# 触发条件：当代码推送到 main 分支时触发
+# 触发条件：当代码推送到 master 分支时触发
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 # 设置权限，允许部署到 GitHub Pages
 permissions:
