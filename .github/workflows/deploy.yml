@@ -55,3 +55,37 @@ jobs:
           name: build-files
           path: ./build # React 默认是 build，Vue 是 dist，请根据实际情况修改
 
+  # 任务 2: 部署
+  deploy:
+    # 需要依赖构建任务完成
+    needs: build-and-test
+    
+    # 指定部署环境
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    # 指定运行器
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 下载构建产物
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .
+
+      # 2. 部署到 GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 再次确认上传的目录，React 是 build，Vue 是 dist
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
